@@ -2,29 +2,151 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Breakout with Kontra.js</title>
+  <title>Multiplayer Breakout with Kontra.js</title>
   <style>
-    canvas {
-      display: block;
-      margin: 0 auto;
-      background: #111;
+    body {
+      margin: 0;
+      padding: 20px;
+      background: #222;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
+    
+    h1 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    
+    canvas {
+      background: #111;
+      border: 2px solid #444;
+      margin: 0 5px;
+    }
+    
+    .game-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    
+    .canvas-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .canvas-label {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+    
+    #gameInfo {
+      margin: 10px 0;
+      text-align: center;
+      font-size: 14px;
+    }
+    
     #restartBtn {
       display: none;
       margin: 20px auto;
       padding: 10px 20px;
       font-size: 16px;
-      display: block;
+      background: #007cba;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    #restartBtn:hover {
+      background: #005a87;
+    }
+    
+    .instructions {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #ccc;
+    }
+    
+    .connection-status {
+      margin: 10px 0;
+      padding: 5px 10px;
+      border-radius: 3px;
+      font-size: 12px;
+    }
+    
+    .connected {
+      background: #2d5016;
+      color: #7fd13b;
+    }
+    
+    .disconnected {
+      background: #5d1a1a;
+      color: #ff6b6b;
     }
   </style>
 </head>
 <body>
-  <canvas width="500" height="500"></canvas>
-  <button id="restartBtn">Restart</button>
+  <h1>Multiplayer Breakout</h1>
+  
+  <div id="gameInfo">
+    <div class="connection-status disconnected" id="connectionStatus">
+      Connecting to server...
+    </div>
+  </div>
+  
+  <div class="game-container">
+    <div class="canvas-wrapper">
+      <div class="canvas-label">Your Game</div>
+      <canvas id="localCanvas" width="500" height="500"></canvas>
+    </div>
+    <div class="canvas-wrapper">
+      <div class="canvas-label">Opponent</div>
+      <canvas id="opponentCanvas" width="500" height="500"></canvas>
+    </div>
+  </div>
+  <button id="restartBtn">Restart Game</button>
+  
+  <div class="instructions">
+    <p><strong>Controls:</strong> Use Arrow Keys or A/D to move your paddle</p>
+    <p><strong>Objective:</strong> Break all your bricks before your opponent!</p>
+    <p><strong>Left side:</strong> Your game | <strong>Right side:</strong> Opponent's game</p>
+  </div>
 
   <!-- Load Kontra.js -->
   <script src="https://unpkg.com/kontra/kontra.min.js"></script>
   <!-- Load your game logic -->
+  <script>
+    // Add connection status updates
+    const originalGame = Game;
+    
+    // Override the connection status display
+    function updateConnectionStatus(status, message) {
+      const statusElement = document.getElementById('connectionStatus');
+      if (status === 'connected') {
+        statusElement.className = 'connection-status connected';
+        statusElement.textContent = message || 'Connected - Waiting for opponent...';
+      } else if (status === 'playing') {
+        statusElement.className = 'connection-status connected';
+        statusElement.textContent = 'Game in progress!';
+      } else {
+        statusElement.className = 'connection-status disconnected';
+        statusElement.textContent = message || 'Disconnected from server';
+      }
+    }
+    
+    // Initial status
+    updateConnectionStatus('disconnected', 'Connecting to server...');
+  </script>
   <script src="game.js"></script>
 </body>
 </html>
