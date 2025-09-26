@@ -24,7 +24,7 @@ const Game = (function () {
     // Connect to WebSocket server
     function connectToServer() {
         try {
-            ws = new WebSocket('ws://localhost:8080/ws');
+            ws = new WebSocket('wss://seal-in.onrender.com/ws');
             
             ws.onopen = function() {
                 console.log('Connected to server');
