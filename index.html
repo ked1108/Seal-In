@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Breakout with Kontra.js</title>
+  <style>
+    canvas {
+      display: block;
+      margin: 0 auto;
+      background: #111;
+    }
+    #restartBtn {
+      display: none;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <canvas width="500" height="500"></canvas>
+  <button id="restartBtn">Restart</button>
+
+  <!-- Load Kontra.js -->
+  <script src="https://unpkg.com/kontra/kontra.min.js"></script>
+  <!-- Load your game logic -->
+  <script src="game.js"></script>
+</body>
+</html>
